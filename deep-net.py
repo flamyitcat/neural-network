@@ -13,4 +13,3 @@ print(result)
 with tf.Session() as sess:
     output = sess.run(result)
     print(output)
-
