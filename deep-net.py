@@ -35,16 +35,16 @@ y = tf.placeholder('float')
 
 def neural_network_model(data):
     hidden_1_layer = {'weights':tf.Variable(tf.random_normal([784, n_nodes_hl1])),
-                      'biases':tf.Variable(tf.random_normal(n_nodes_hl1))}
+                      'biases':tf.Variable(tf.random_normal([n_nodes_hl1]))}
 
     hidden_2_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2])),
-                      'biases':tf.Variable(tf.random_normal(n_nodes_hl2))}
+                      'biases':tf.Variable(tf.random_normal([n_nodes_hl2]))}
     
     hidden_3_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3])),
-                      'biases':tf.Variable(tf.random_normal(n_nodes_hl3))}
+                      'biases':tf.Variable(tf.random_normal([n_nodes_hl3]))}
 
     output_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl3, n_classes])),
-                      'biases':tf.Variable(tf.random_normal(n_classes))}
+                      'biases':tf.Variable(tf.random_normal([n_classes]))}
     
     # input_data * weights + biases
 
@@ -69,7 +69,7 @@ def train_neural_network(x):
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
-        for epoch in hm_epochs:
+        for epoch in range(hm_epochs):
             epoch_loss = 0
             for _ in range(int(mnist.train.num_examples/batch_size)):
                 epoch_x, epoch_y = mnist.train.next_batch(batch_size)
@@ -77,8 +77,8 @@ def train_neural_network(x):
                 epoch_loss += c
             print('Epoch', epoch, 'completed out of', hm_epochs, 'loss', epoch_loss)
 
-        correct = tf.equal(tf.argmax(prediction, 1), tf.arg_max(epoch_y,1))
+        correct = tf.equal(tf.argmax(prediction, 1), tf.arg_max(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
         print('Accuracy', accuracy.eval({x:mnist.test.images, y:mnist.test.labels}))
-
-    train_neural_network(x)
+        
+train_neural_network(x)
